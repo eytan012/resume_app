@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 
@@ -11,7 +11,7 @@ const initialState = {
 };
 
 const Register = () => {
-	const [values, setValues] = useState(initialState);
+	const [values,] = useState(initialState);
 	const handleChange = (e) => {
 		e.preventDefault();
 	};
