@@ -1,5 +1,5 @@
 import Wrapper from "../assets/wrappers/ErrorPage";
-import error from '../assets/images/error.svg'
+import error from '../assets/images/404.svg'
 import { Link } from "react-router-dom";
 const Error = () => {
 	return <Wrapper className="full-page">
