@@ -3,17 +3,16 @@ import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 
 const initialState = {
-	name: "",
-	email: "",
-	password: "",
+	name: '',
+	email: '',
+	password: '',
 	isMember: true,
-  showAlert:false,
-};
-
+	showAlert:false,
+  }
 const Register = () => {
-	const [values,] = useState(initialState);
+	const [values, setValues] = useState(initialState);
 	const handleChange = (e) => {
-		e.preventDefault();
+		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -23,7 +22,7 @@ const Register = () => {
 			<form className="form" onSubmit={handleSubmit}>
 				<Logo />
 				<h3>Login</h3>
-        {values.showAlert && <Alert/>}
+				{values.showAlert && <Alert />}
 				<FormRow
 					type={"text"}
 					name="name"
