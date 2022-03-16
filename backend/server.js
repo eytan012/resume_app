@@ -3,7 +3,6 @@ import notFoundMiddleware from "./middleware/not-found.js";
 
 const app = express();
 
-app.get('/hey',(req,res)=>res.send("HELLO"))
 //middleware
 app.use(notFoundMiddleware);
 

@@ -11,7 +11,7 @@ const initialState = {
 };
 const Register = () => {
 	const [values, setValues] = useState(initialState);
-	const { isLoading, showAlert } = useAppContext();
+	const { showAlert, displayAlert } = useAppContext();
 
 	const toggleMember = () => {
 		setValues({ ...values, isMember: !values.isMember });
@@ -21,6 +21,11 @@ const Register = () => {
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		const { name, email, password, isMember } = values;
+		if (!email || !password || (!isMember && !name)) {
+			displayAlert();
+			return;
+		}
 	};
 	return (
 		<Wrapper className="full-page">
