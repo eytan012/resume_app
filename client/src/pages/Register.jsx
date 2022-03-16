@@ -1,16 +1,21 @@
 import { useState } from "react";
+import { useAppContext } from "../context/appContext";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/wrappers/RegisterPage";
 
 const initialState = {
-	name: '',
-	email: '',
-	password: '',
+	name: "",
+	email: "",
+	password: "",
 	isMember: true,
-	showAlert:false,
-  }
+};
 const Register = () => {
 	const [values, setValues] = useState(initialState);
+	const { isLoading, showAlert } = useAppContext();
+
+	const toggleMember = () => {
+		setValues({ ...values, isMember: !values.isMember });
+	};
 	const handleChange = (e) => {
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
@@ -21,14 +26,16 @@ const Register = () => {
 		<Wrapper className="full-page">
 			<form className="form" onSubmit={handleSubmit}>
 				<Logo />
-				<h3>Login</h3>
-				{values.showAlert && <Alert />}
-				<FormRow
-					type={"text"}
-					name="name"
-					value={values.name}
-					handleChange={handleChange}
-				/>
+				<h3>{values.isMember ? "Login" : "Register"}</h3>
+				{showAlert && <Alert />}
+				{!values.isMember && (
+					<FormRow
+						type={"text"}
+						name="name"
+						value={values.name}
+						handleChange={handleChange}
+					/>
+				)}
 				<FormRow
 					type="email"
 					name="email"
@@ -44,6 +51,12 @@ const Register = () => {
 				<button type="submit" className="btn btn-block">
 					Submit
 				</button>
+				<p>
+					{values.isMember ? "Not a member yet?" : "Already a member?"}
+					<button type="button" onClick={toggleMember} className="member-btn">
+						{values.isMember ? "Register" : "Login"}
+					</button>
+				</p>
 			</form>
 		</Wrapper>
 	);
