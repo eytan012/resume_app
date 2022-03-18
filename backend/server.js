@@ -5,15 +5,18 @@ import connectDB from "./db/connect.js";
 const app = express();
 dotenv.config();
 
+app.get('/test',(req,res)=>{
+   throw new Error("test")
+})
+
+
+
 //middleware
 import errorHandlerMiddleWare from "./middleware/error-handler.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleWare);
 
-app.get('/test',(req,res)=>{
-    res.send("WORKING")
-})
 
 const port = process.env.PORT || 5000;
 
