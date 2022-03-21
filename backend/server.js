@@ -1,22 +1,24 @@
 import express from "express";
 import dotenv from "dotenv";
-import connectDB from "./db/connect.js";
 
 const app = express();
+app.use(express.json());
 dotenv.config();
 
-app.get('/test',(req,res)=>{
-   throw new Error("test")
-})
+//DB
+import connectDB from "./db/connect.js";
 
-
+//routes
+import authRouter from "./routes/authRoutes.js";
+import jobRouter from "./routes/jobRoutes.js";
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/jobs", jobRouter);
 
 //middleware
-import errorHandlerMiddleWare from "./middleware/error-handler.js";
 import notFoundMiddleware from "./middleware/not-found.js";
+import errorHandlerMiddleWare from "./middleware/error-handler.js";
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleWare);
-
 
 const port = process.env.PORT || 5000;
 
