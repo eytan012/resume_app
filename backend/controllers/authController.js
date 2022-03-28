@@ -1,9 +1,24 @@
-const register = async (req, res) => {
+import User from "../models/User.js";
+import { StatusCodes } from "http-status-codes";
+const register = async (req, res, next) => {
+	const { name, email, password } = req.body;
 	try {
-		res.send(req.body);
+		if (!name || !password || !email) {
+			next({ message: "Please fill up all fields" });
+			return;
+		}
+		const isEmailExists = await User.findOne({ email });
+		if (isEmailExists) {
+			next({ message: "Email already in use" });
+			return;
+		}
+		const user = await User.create(req.body);
+		const token = await user.createJWT(); // custom method from USER_MODEL
+		user.password = null;
+		res.status(StatusCodes.OK).json({ user, token });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ msg: "error.." });
+		console.log('catch block');
+		next(error);
 	}
 };
 
@@ -16,7 +31,6 @@ const login = async (req, res) => {
 	}
 };
 
-
 const updateUser = async (req, res) => {
 	try {
 		res.send("update");
@@ -26,4 +40,4 @@ const updateUser = async (req, res) => {
 	}
 };
 
-export { login,updateUser,register };
+export { login, updateUser, register };
