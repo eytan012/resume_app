@@ -13,7 +13,7 @@ const initialState = {
 };
 const Register = () => {
 	const [values, setValues] = useState(initialState);
-	const { showAlert, displayAlert, registerUser,  user } =
+	const { showAlert, displayAlert, registerUser, loginUser, user } =
 		useAppContext();
 	const navigate = useNavigate();
 	useEffect(() => {
@@ -34,8 +34,11 @@ const Register = () => {
 			return;
 		}
 		const currentUser = { name, email, password };
-		if (isMember) return console.log("Alreadey a user");
-		registerUser(currentUser);
+		if (isMember){
+			loginUser(currentUser)
+		} else{
+			registerUser(currentUser);
+		}
 	};
 	return (
 		<Wrapper className="full-page">

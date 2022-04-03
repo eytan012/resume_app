@@ -6,6 +6,9 @@ import {
 	REGISTER_USER_ERROR,
 	REGISTER_USER_SUCCESS,
 	REGISTER_USER_BEGIN,
+	LOGIN_USER_BEGIN,
+	LOGIN_USER_ERROR,
+	LOGIN_USER_SUCCESS,
 } from "./actionTypes";
 import reducer from "./reducer";
 
@@ -65,17 +68,40 @@ const AppProvider = ({ children }) => {
 		}
 	};
 
-	const logout = async ()=>{
+	const loginUser = async (currentUser) => {
+		dispatch({ type: LOGIN_USER_BEGIN });
+		try {
+			const { data } = await axios.post("/api/v1/auth/login", currentUser);
+			const { user, token, location } = data;
+			dispatch({
+				type: LOGIN_USER_SUCCESS,
+				payload: { user, token, location },
+			});
+			// set local storage
+			addUserToLocalStorage({ user, token, location });
+		} catch (error) {
+			console.log(error.response);
+			dispatch({
+				type: LOGIN_USER_ERROR,
+				payload: { msg: error?.response?.data?.msg },
+			});
+		} finally {
+			clearAlert();
+		}
+	};
+
+
+	const logout = async () => {
 		try {
 			removeUserFromLocalStorage();
 		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
 
 	return (
 		<AppContext.Provider
-			value={{ ...state, displayAlert, clearAlert, registerUser,logout }}
+			value={{ ...state, displayAlert, clearAlert, registerUser, loginUser, logout }}
 		>
 			{children}
 		</AppContext.Provider>
